@@ -14,6 +14,7 @@ public class LogInWindow extends JFrame implements ActionListener{
     JPasswordField passwordField;
     JTextField loginField;
     JCheckBox echoCheckBox;
+
     public LogInWindow(){
         setSize(windowWidth, windowHeight);
         setResizable(false);
