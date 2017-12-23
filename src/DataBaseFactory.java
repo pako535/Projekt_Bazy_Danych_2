@@ -2,11 +2,8 @@ import java.sql.*;
 import com.mysql.jdbc.Connection;
 
 public class DataBaseFactory {
-    private final String ConnectionURL = "localhost";
+
     Connection conn = null ;
-    private final String Username = "root";
-    private final String Password = "admin";
-    Connection connection;
 
     public DataBaseFactory(){
         try {
