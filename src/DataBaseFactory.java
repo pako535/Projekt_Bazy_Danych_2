@@ -1,20 +1,28 @@
 import java.sql.*;
+import com.mysql.jdbc.Connection;
 
 public class DataBaseFactory {
-    private final String ConnectionURL = "";
-    private final String Username = "";
-    private final String Password = "";
+    private final String ConnectionURL = "localhost";
+    Connection conn = null ;
+    private final String Username = "root";
+    private final String Password = "admin";
     Connection connection;
 
     public DataBaseFactory(){
         try {
-            connection = DriverManager.getConnection(ConnectionURL);
-            Class.forName("com.mysql.jdbc.Driver");
+            conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306","root","admin");
+           // Class.forName("com.mysql.jdbc.Driver");
+            if (conn != null)
+            {
+                System.out.println("Connected succesfully");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
+       // } catch (ClassNotFoundException e) {
+       //     e.printStackTrace();
+       // }
+
     }
 
     public boolean checkPassword(String login, String password){
