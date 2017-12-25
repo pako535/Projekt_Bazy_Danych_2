@@ -28,6 +28,7 @@ public class DataBaseFactory {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        if(login.equals(password)) return true;
         return false;
     }
 }
