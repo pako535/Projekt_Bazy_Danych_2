@@ -3,11 +3,18 @@ import com.mysql.jdbc.Connection;
 
 public class DataBaseFactory {
 
-    Connection conn = null ;
+    private String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    private String MYSQL_URL = "jdbc:mysql://localhost:3306/mydb";
+    private Connection conn;
+    private Statement statement;
+    private ResultSet resultSet;
+
+
 
     public DataBaseFactory(){
         try {
-            conn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306","root","admin");
+           // Class.forName(MYSQL_DRIVER);
+            conn = (Connection)DriverManager.getConnection(MYSQL_URL,"root","admin");
            // Class.forName("com.mysql.jdbc.Driver");
             if (conn != null)
             {
@@ -22,13 +29,14 @@ public class DataBaseFactory {
 
     }
 
-    public boolean checkPassword(String login, String password){
-        String  query = "SELECT hasło FROM osoby WHERE login LIKE '" + login + "';";
-        Statement statement = null;
+    public boolean checkPassword(String loginn, String password){
+        String  query = "SELECT hasło FROM osoby WHERE login LIKE " + loginn + ";";
         try {
-            statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
-            if(password.equals(resultSet.getString("hasło"))) return true;
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+            System.out.println(resultSet);
+            if(password.equals(resultSet.getString("hasło")))
+                return true;
             return false;
         } catch (SQLException e) {
             e.printStackTrace();
