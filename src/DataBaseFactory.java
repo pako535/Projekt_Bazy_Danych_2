@@ -30,14 +30,16 @@ public class DataBaseFactory {
     }
 
     public boolean checkPassword(String loginn, String password){
-        String  query = "SELECT hasło FROM osoby WHERE login LIKE " + loginn + ";";
+        String  query = "SELECT hasło FROM osoby WHERE login = '" + loginn + "';";
         try {
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
             System.out.println(resultSet);
-            if(password.equals(resultSet.getString("hasło")))
-                return true;
-            return false;
+            if(resultSet.next()) {
+                String wynik = resultSet.getString("hasło");
+                if (password.equals(wynik))
+                    return true;
+            }return false;
         } catch (SQLException e) {
             e.printStackTrace();
         }
