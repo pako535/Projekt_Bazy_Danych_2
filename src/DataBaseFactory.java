@@ -9,13 +9,9 @@ public class DataBaseFactory {
     private Statement statement;
     private ResultSet resultSet;
 
-
-
     public DataBaseFactory(){
         try {
-           // Class.forName(MYSQL_DRIVER);
             conn = (Connection)DriverManager.getConnection(MYSQL_URL,"root","admin");
-           // Class.forName("com.mysql.jdbc.Driver");
             if (conn != null)
             {
                 System.out.println("Connected succesfully");
@@ -23,21 +19,17 @@ public class DataBaseFactory {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-       // } catch (ClassNotFoundException e) {
-       //     e.printStackTrace();
-       // }
-
     }
 
-    public boolean checkPassword(String loginn, String password){
-        String  query = "SELECT hasło FROM osoby WHERE login = '" + loginn + "';";
+    public boolean checkPassword(String login, String password){
+        String  query = "SELECT hasło FROM osoby WHERE login = '" + login + "';";
         try {
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
             System.out.println(resultSet);
             if(resultSet.next()) {
-                String wynik = resultSet.getString("hasło");
-                if (password.equals(wynik))
+                String result = resultSet.getString("hasło");
+                if (password.equals(result))
                     return true;
             }return false;
         } catch (SQLException e) {
@@ -45,5 +37,21 @@ public class DataBaseFactory {
         }
         if(login.equals(password)) return true;
         return false;
+    }
+
+    public Object[][] getData(String table, boolean [] chosenParameters, String [] values){
+        // funkcja tworząca odpowiednie query i ściągająca dane z bazy. Dane zwraca jako tablicę obiektów
+        if(table.equals("osoby")){
+            Object [][] data = {{"dupa", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki"},
+                    {"dupa", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki"}};
+            return data;
+        }else if(table.equals("sprzet")){
+            Object [][] data = {{"dupa", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki", "cycki"},
+                    {"dupa", "dupa", "cycki", "dupa", "cycki", "dupa", "dupa", "cycki"}};
+            return data;
+        }else{
+            Object [][] data = {{"dupa","dupa","dupa"},{"cycki","cycki","cycki"}};
+            return data;
+        }
     }
 }

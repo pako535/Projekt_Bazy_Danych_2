@@ -20,6 +20,7 @@ public class LogInWindow extends JFrame implements ActionListener{
 
     public LogInWindow(){
         setSize(windowWidth, windowHeight);
+        setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Sign in");
         setLayout(null);
