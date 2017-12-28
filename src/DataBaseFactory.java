@@ -41,6 +41,11 @@ public class DataBaseFactory {
 
     public Object[][] getData(String table, boolean [] chosenParameters, String [] values){
         // funkcja tworząca odpowiednie query i ściągająca dane z bazy. Dane zwraca jako tablicę obiektów
+        String query = "SELECT * FROM ";
+        if(table.equals("lokalizacja")){
+            query += table + " WHERE ";
+
+        }
         if(table.equals("osoby")){
             Object [][] data = {{"dupa", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki"},
                     {"dupa", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki"}};
@@ -53,5 +58,17 @@ public class DataBaseFactory {
             Object [][] data = {{"dupa","dupa","dupa"},{"cycki","cycki","cycki"}};
             return data;
         }
+    }
+
+    public boolean removeData(String table, int id){
+        // funkcja usuwająca wiersz o danym id z tabeli table
+        boolean success = false;
+        return success;
+    }
+
+    public boolean addData(String table, String[] dataToAdd){
+        // funkcja dodająca wiersz wypełniony danymi z dataToAdd do tabeli table
+        boolean success = false;
+        return success;
     }
 }

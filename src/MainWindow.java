@@ -126,7 +126,7 @@ public class MainWindow extends JFrame implements ActionListener{
         locationsCard.setLayout(null);
         locationsScroll = new JScrollPane();
         locationsScroll.setBounds(125,15,500, 350);
-        data = new DataBaseFactory().getData("lokalizacje", chosenParams, values );
+        data = new DataBaseFactory().getData("lokalizacja", chosenParams, values );
         locationsTable = new JTable(data, locationsTableColumnNames);
         locationsScroll.setViewportView(locationsTable);
 
@@ -237,6 +237,43 @@ public class MainWindow extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        Object source = e.getSource();
+        int index = tabbedPane.getSelectedIndex();
+        String table;
+        DataBaseFactory dataBaseFactory = new DataBaseFactory();
+        if(source == addButton){
+            if(index == 0){
+                table = "osoby";
+            } else if(index == 1){
+                table = "lokalizacja";
+            } else{
+                table = "sprzet";
+            }
+        } else if(source == findButton){
+            boolean [] chosenParams = new boolean[3];
+            String [] params = new String [3];
+            if(index == 0){
+                table = "osoby";
+            } else if(index == 1){
+                table = "lokalizacja";
+                chosenParams[0] = locationsLocationIDBox.isSelected();
+                chosenParams[1] = locationsCityBox.isSelected();
+                chosenParams[2] = locationsPostCodeBox.isSelected();
+                params[0] = locationsLocationIDTxt.getText();
+                params[1] = locationsCityTxt.getText();
+                params[2] = locationsPostCodeTxt.getText();
+                locationsTable = new JTable(dataBaseFactory.getData(table, chosenParams, params), locationsTableColumnNames);
+            } else{
+                table = "sprzet";
+            }
+        } else{
+            if(index == 0){
+                table = "osoby";
+            } else if(index == 1){
+                table = "lokalizacja";
+            } else{
+                table = "sprzet";
+            }
+        }
     }
 }
