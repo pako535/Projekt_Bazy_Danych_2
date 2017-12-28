@@ -250,21 +250,76 @@ public class MainWindow extends JFrame implements ActionListener{
                 table = "sprzet";
             }
         } else if(source == findButton){
-            boolean [] chosenParams = new boolean[3];
-            String [] params = new String [3];
+
             if(index == 0){
+                boolean [] chosenParams = new boolean[9];
+                String [] params = new String [9];
+
                 table = "osoby";
+
+                chosenParams[0] = peoplePersonIDBox.isSelected();
+                chosenParams[1] = peopleLocationIDBox.isSelected();
+                chosenParams[2] = peopleNameBox.isSelected();
+                chosenParams[3] = peopleSurnameBox.isSelected();
+                chosenParams[4] = peoplePhoneNumberBox.isSelected();
+                chosenParams[5] = peopleAddressBox.isSelected();
+                chosenParams[6] = peopleMailBox.isSelected();
+                chosenParams[7] = peopleLoginBox.isSelected();
+                chosenParams[8] = peopleHashBox.isSelected();
+
+                params[0] = peoplePersonIDTxt.getText();
+                params[1] = peopleLocationIDTxt.getText();
+                params[2] = peopleNameTxt.getText();
+                params[3] = peopleSurnameTxt.getText();
+                params[4] = peoplePhoneNumberTxt.getText();
+                params[5] = peopleAddressTxt.getText();
+                params[6] = peopleMailTxt.getText();
+                params[7] = peopleLoginTxt.getText();
+                params[8] = peopleHashTxt.getText();
+
+                peopleTable = new JTable(dataBaseFactory.getData(table,chosenParams,params), peopleTableColumnNames);
+
             } else if(index == 1){
+
+                boolean [] chosenParams = new boolean[3];
+                String [] params = new String [3];
+
                 table = "lokalizacja";
+
                 chosenParams[0] = locationsLocationIDBox.isSelected();
                 chosenParams[1] = locationsCityBox.isSelected();
                 chosenParams[2] = locationsPostCodeBox.isSelected();
+
                 params[0] = locationsLocationIDTxt.getText();
                 params[1] = locationsCityTxt.getText();
                 params[2] = locationsPostCodeTxt.getText();
+
                 locationsTable = new JTable(dataBaseFactory.getData(table, chosenParams, params), locationsTableColumnNames);
             } else{
+                boolean [] chosenParams = new boolean[8];
+                String [] params = new String [8];
+
                 table = "sprzet";
+
+                chosenParams[0] = equipmentEquipmentIdBox.isSelected();
+                chosenParams[1] = equipmentTypeBox.isSelected();
+                chosenParams[2] = equipmentBrandBox.isSelected();
+                chosenParams[3] = equipmentParamsBox.isSelected();
+                chosenParams[4] = equipmentConditionBox.isSelected();
+                chosenParams[5] = equipmentLocationIDBox.isSelected();
+                chosenParams[6] = equipmentPersonIDBox.isSelected();
+                chosenParams[7] = equipmentModelBox.isSelected();
+
+                params[0] = equipmentEquipmentIdTxt.getText();
+                params[1] = equipmentTypeTxt.getText();
+                params[2] = equipmentBrandTxt.getText();
+                params[3] = equipmentParamsTxt.getText();
+                params[4] = equipmentConditionTxt.getText();
+                params[5] = equipmentLocationIDTxt.getText();
+                params[6] = equipmentPersonIDTxt.getText();
+                params[7] = equipmentModelTxt.getText();
+
+                equipmentTable = new JTable(dataBaseFactory.getData(table, chosenParams, params), equipmentTableColumnNames);
             }
         } else{
             if(index == 0){

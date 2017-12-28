@@ -1,5 +1,6 @@
 import java.sql.*;
 import com.mysql.jdbc.Connection;
+import sun.applet.Main;
 
 public class DataBaseFactory {
 
@@ -59,6 +60,7 @@ public class DataBaseFactory {
             return data;
         }
     }
+
 
     public boolean removeData(String table, int id){
         // funkcja usuwająca wiersz o danym id z tabeli table
