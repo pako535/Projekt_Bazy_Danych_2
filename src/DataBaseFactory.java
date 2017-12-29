@@ -48,6 +48,107 @@ public class DataBaseFactory {
         if(table.equals("lokalizacja")){
             query += table + "lokalizacja WHERE ";
 
+
+            int dl = chosenParameters.length;
+            boolean flag = false;
+            for(int i = 0; i < dl ; i++)
+            {
+                if(chosenParameters[i] == true & flag == false)
+                {
+                    flag = true;
+                    if(i==0)
+                    {
+                        query += "id_osoby = '" + values[i] + "'";
+                    }else if(i == 1)
+                    {
+                        query += "id_lokalizacji = '" + values[i] + "'";
+                    }else if(i == 2)
+                    {
+                        query += "imie = '" + values[i] + "'";
+                    }else if(i == 3)
+                    {
+                        query += "nazwisko = '" + values[i] + "'";
+                    }else if(i == 4)
+                    {
+                        query += "nr_tel = '" + values[i] + "'";
+                    }else if(i == 5)
+                    {
+                        query += "adres = '" + values[i] + "'";
+                    }else if(i == 6)
+                    {
+                        query += "mail = '" + values[i] + "'";
+                    }else if(i == 7)
+                    {
+                        query += "login = '" + values[i] + "'";
+                    }else if(i == 8)
+                    {
+                        query += "hasło = '" + values[i] + "'";
+                    }
+                }
+                else if(chosenParameters[i] == true & flag == true)
+                {
+                    if(i==0)
+                    {
+                        query += " AND id_osoby = '" + values[i] + "'";
+                    }else if(i == 1)
+                    {
+                        query += " AND id_lokalizacji = '" + values[i] + "'";
+                    }else if(i == 2)
+                    {
+                        query += " AND imie = '" + values[i] + "'";
+                    }else if(i == 3)
+                    {
+                        query += " AND nazwisko = '" + values[i] + "'";
+                    }else if(i == 4)
+                    {
+                        query += " AND nr_tel = '" + values[i] + "'";
+                    }else if(i == 5)
+                    {
+                        query += " AND adres = '" + values[i] + "'";
+                    }else if(i == 6)
+                    {
+                        query += " AND mail = '" + values[i] + "'";
+                    }else if(i == 7)
+                    {
+                        query += " AND login = '" + values[i] + "'";
+                    }else if(i == 8)
+                    {
+                        query += " AND hasło = '" + values[i] + "'";
+                    }
+                }
+            }
+            query +=";";
+
+
+            //Object [][] data ;
+            List list = new ArrayList();
+            try{
+
+                statement = conn.createStatement();
+                resultSet = statement.executeQuery(query);
+                //System.out.println(resultSet);
+                while(resultSet.next()) {
+
+                    Object [] tmp = new Object[9];
+                    tmp[0] = resultSet.getString("id_osoby");
+                    tmp[1] = resultSet.getString("id_lokalizacji");
+                    tmp[2] = resultSet.getString("imie");
+                    tmp[3] = resultSet.getString("nazwisko");
+                    tmp[4] = resultSet.getString("nr_tel");
+                    tmp[5] = resultSet.getString("adres");
+                    tmp[6] = resultSet.getString("mail");
+                    tmp[7] = resultSet.getString("login");
+                    tmp[8] = resultSet.getString("hasło");
+                    //*********************************************************
+                    list.add(tmp);  // lista wierszy które trzeba by wstawić do JTable
+                }                   //**********************************************************
+            } catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+
+
+
             Object [][] data = {{"dupa","dupa","dupa"},{"cycki","cycki","cycki"}};
             return data;
 
