@@ -344,9 +344,10 @@ public class DataBaseFactory {
 
             for(int i = 0; i < dataToAdd.length; i++)
             {
-                query += "'" + dataToAdd[i] + "'";
+                query += "'" + dataToAdd[i] + "', ";
             }
-            query += ";";
+            query = query.substring(0,query.length() - 2);
+            query += ");";
 
 
             try{
