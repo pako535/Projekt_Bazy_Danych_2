@@ -45,7 +45,7 @@ public class DataBaseFactory {
     public Object[][] getData(String table, boolean [] chosenParameters, String [] values, String linker){
         String query = "SELECT * FROM ";
         if(table.equals("osoby")){
-            query += table + "osoby WHERE ";
+            query += "osoby WHERE ";
             int dl = chosenParameters.length;
             boolean flag = false;
             for(int i = 0; i < dl ; i++) {

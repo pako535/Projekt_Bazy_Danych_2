@@ -277,7 +277,7 @@ public class MainWindow extends JFrame implements ActionListener{
                 boolean [] chosenParams = new boolean[9];
                 String [] params = new String [9];
 
-                table = " osoby ";
+                table = "osoby";
 
                 chosenParams[0] = peoplePersonIDBox.isSelected();
                 chosenParams[1] = peopleLocationIDBox.isSelected();
@@ -312,7 +312,7 @@ public class MainWindow extends JFrame implements ActionListener{
                 boolean [] chosenParams = new boolean[3];
                 String [] params = new String [3];
 
-                table = " lokalizacja ";
+                table = "lokalizacja";
 
                 chosenParams[0] = locationsLocationIDBox.isSelected();
                 chosenParams[1] = locationsCityBox.isSelected();
@@ -332,7 +332,7 @@ public class MainWindow extends JFrame implements ActionListener{
                 boolean [] chosenParams = new boolean[8];
                 String [] params = new String [8];
 
-                table = " sprzet ";
+                table = "sprzet";
 
                 chosenParams[0] = equipmentEquipmentIdBox.isSelected();
                 chosenParams[1] = equipmentTypeBox.isSelected();
