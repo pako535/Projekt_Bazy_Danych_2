@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -262,10 +261,12 @@ public class MainWindow extends JFrame implements ActionListener{
         if(source == andBox){
             if(andBox.isSelected()) orBox.setSelected(false);
             else orBox.setSelected(true);
-        } else if(source == orBox){
+        }
+        else if(source == orBox){
             if(andBox.isSelected()) andBox.setSelected(false);
             else andBox.setSelected(true);
-        }else{
+        }
+        else{
             int index = tabbedPane.getSelectedIndex();
             String table;
             DataBaseFactory dataBaseFactory = new DataBaseFactory();
@@ -276,7 +277,7 @@ public class MainWindow extends JFrame implements ActionListener{
                 boolean [] chosenParams = new boolean[9];
                 String [] params = new String [9];
 
-                table = "osoby";
+                table = " osoby ";
 
                 chosenParams[0] = peoplePersonIDBox.isSelected();
                 chosenParams[1] = peopleLocationIDBox.isSelected();
@@ -299,16 +300,19 @@ public class MainWindow extends JFrame implements ActionListener{
                 params[8] = peopleHashTxt.getText();
 
                 if(source == addButton){
-
-                } else if(source == findButton){
+                    dataBaseFactory.addData(table, params);
+                }
+                else if(source == findButton){
                     peopleTable = new JTable(dataBaseFactory.getData(table, chosenParams, params, linker), peopleTableColumnNames);
-                } else{
+                }
+                else{
+                    dataBaseFactory.removeData(table, chosenParams, params, linker);
                 }
             } else if(index == 1){
                 boolean [] chosenParams = new boolean[3];
                 String [] params = new String [3];
 
-                table = "lokalizacja";
+                table = " lokalizacja ";
 
                 chosenParams[0] = locationsLocationIDBox.isSelected();
                 chosenParams[1] = locationsCityBox.isSelected();
@@ -318,16 +322,17 @@ public class MainWindow extends JFrame implements ActionListener{
                 params[1] = locationsCityTxt.getText();
                 params[2] = locationsPostCodeTxt.getText();
                 if(source == addButton){
-
+                    dataBaseFactory.addData(table, params);
                 } else if(source == findButton){
                     locationsTable = new JTable(dataBaseFactory.getData(table, chosenParams, params, linker), locationsTableColumnNames);
                 } else{
+                    dataBaseFactory.removeData(table, chosenParams, params, linker);
                 }
             } else{
                 boolean [] chosenParams = new boolean[8];
                 String [] params = new String [8];
 
-                table = "sprzet";
+                table = " sprzet ";
 
                 chosenParams[0] = equipmentEquipmentIdBox.isSelected();
                 chosenParams[1] = equipmentTypeBox.isSelected();
@@ -347,10 +352,11 @@ public class MainWindow extends JFrame implements ActionListener{
                 params[6] = equipmentPersonIDTxt.getText();
                 params[7] = equipmentModelTxt.getText();
                 if(source == addButton){
-
+                    dataBaseFactory.addData(table, params);
                 } else if(source == findButton){
                     equipmentTable = new JTable(dataBaseFactory.getData(table, chosenParams, params, linker), equipmentTableColumnNames);
                 } else{
+                    dataBaseFactory.removeData(table, chosenParams, params, linker);
                 }
             }
         }

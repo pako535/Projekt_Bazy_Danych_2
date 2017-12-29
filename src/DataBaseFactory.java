@@ -2,7 +2,6 @@ import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 import com.mysql.jdbc.Connection;
-import sun.applet.Main;
 
 public class DataBaseFactory {
 
@@ -265,10 +264,9 @@ public class DataBaseFactory {
         }
     }
 
-
-    public boolean removeData(String table, int id){
-        // funkcja usuwająca wiersz o danym id z tabeli table
+    public boolean removeData(String table, boolean [] chosenParameters, String [] values, String linker ){
         boolean success = false;
+        String transaction = " DELETE FROM " + table;
         return success;
     }
 
