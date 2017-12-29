@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -303,7 +304,8 @@ public class MainWindow extends JFrame implements ActionListener{
                     dataBaseFactory.addData(table, params);
                 }
                 else if(source == findButton){
-                    peopleTable = new JTable(dataBaseFactory.getData(table, chosenParams, params, linker), peopleTableColumnNames);
+                    DefaultTableModel tableModel =  new DefaultTableModel(dataBaseFactory.getData(table, chosenParams, params, linker), peopleTableColumnNames);
+                    peopleTable.setModel(tableModel);
                 }
                 else{
                     dataBaseFactory.removeData(table, chosenParams, params, linker);
@@ -324,7 +326,8 @@ public class MainWindow extends JFrame implements ActionListener{
                 if(source == addButton){
                     dataBaseFactory.addData(table, params);
                 } else if(source == findButton){
-                    locationsTable = new JTable(dataBaseFactory.getData(table, chosenParams, params, linker), locationsTableColumnNames);
+                    DefaultTableModel tableModel =  new DefaultTableModel(dataBaseFactory.getData(table, chosenParams, params, linker), locationsTableColumnNames);
+                    locationsTable.setModel(tableModel);
                 } else{
                     dataBaseFactory.removeData(table, chosenParams, params, linker);
                 }
@@ -354,7 +357,8 @@ public class MainWindow extends JFrame implements ActionListener{
                 if(source == addButton){
                     dataBaseFactory.addData(table, params);
                 } else if(source == findButton){
-                    equipmentTable = new JTable(dataBaseFactory.getData(table, chosenParams, params, linker), equipmentTableColumnNames);
+                    DefaultTableModel tableModel =  new DefaultTableModel(dataBaseFactory.getData(table, chosenParams, params, linker), equipmentTableColumnNames);
+                    equipmentTable.setModel(tableModel);
                 } else{
                     dataBaseFactory.removeData(table, chosenParams, params, linker);
                 }
