@@ -269,6 +269,9 @@ public class MainWindow extends JFrame implements ActionListener{
             int index = tabbedPane.getSelectedIndex();
             String table;
             DataBaseFactory dataBaseFactory = new DataBaseFactory();
+            String linker;
+            if(andBox.isSelected()) linker = " AND ";
+            else linker = " OR ";
             if(index == 0){
                 boolean [] chosenParams = new boolean[9];
                 String [] params = new String [9];
@@ -298,7 +301,7 @@ public class MainWindow extends JFrame implements ActionListener{
                 if(source == addButton){
 
                 } else if(source == findButton){
-                    peopleTable = new JTable(dataBaseFactory.getData(table,chosenParams,params), peopleTableColumnNames);
+                    peopleTable = new JTable(dataBaseFactory.getData(table, chosenParams, params, linker), peopleTableColumnNames);
                 } else{
                 }
             } else if(index == 1){
@@ -317,7 +320,7 @@ public class MainWindow extends JFrame implements ActionListener{
                 if(source == addButton){
 
                 } else if(source == findButton){
-                    locationsTable = new JTable(dataBaseFactory.getData(table, chosenParams, params), locationsTableColumnNames);
+                    locationsTable = new JTable(dataBaseFactory.getData(table, chosenParams, params, linker), locationsTableColumnNames);
                 } else{
                 }
             } else{
@@ -346,7 +349,7 @@ public class MainWindow extends JFrame implements ActionListener{
                 if(source == addButton){
 
                 } else if(source == findButton){
-                    equipmentTable = new JTable(dataBaseFactory.getData(table, chosenParams, params), equipmentTableColumnNames);
+                    equipmentTable = new JTable(dataBaseFactory.getData(table, chosenParams, params, linker), equipmentTableColumnNames);
                 } else{
                 }
             }

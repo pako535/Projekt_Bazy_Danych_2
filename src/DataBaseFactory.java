@@ -43,10 +43,10 @@ public class DataBaseFactory {
         return false;
     }
 
-    public Object[][] getData(String table, boolean [] chosenParameters, String [] values){
+    public Object[][] getData(String table, boolean [] chosenParameters, String [] values, String linker){
         String query = "SELECT * FROM ";
-        if(table.equals("lokalizacja")){
-            query += table + "lokalizacja WHERE ";
+        if(table.equals("osoby")){
+            query += table + "osoby WHERE ";
 
 
             int dl = chosenParameters.length;
@@ -89,31 +89,31 @@ public class DataBaseFactory {
                 {
                     if(i==0)
                     {
-                        query += " AND id_osoby = '" + values[i] + "'";
+                        query += linker + " id_osoby = '" + values[i] + "'";
                     }else if(i == 1)
                     {
-                        query += " AND id_lokalizacji = '" + values[i] + "'";
+                        query += linker + " id_lokalizacji = '" + values[i] + "'";
                     }else if(i == 2)
                     {
-                        query += " AND imie = '" + values[i] + "'";
+                        query += linker + " imie = '" + values[i] + "'";
                     }else if(i == 3)
                     {
-                        query += " AND nazwisko = '" + values[i] + "'";
+                        query += linker + " nazwisko = '" + values[i] + "'";
                     }else if(i == 4)
                     {
-                        query += " AND nr_tel = '" + values[i] + "'";
+                        query += linker + " nr_tel = '" + values[i] + "'";
                     }else if(i == 5)
                     {
-                        query += " AND adres = '" + values[i] + "'";
+                        query += linker + " adres = '" + values[i] + "'";
                     }else if(i == 6)
                     {
-                        query += " AND mail = '" + values[i] + "'";
+                        query += linker + " mail = '" + values[i] + "'";
                     }else if(i == 7)
                     {
-                        query += " AND login = '" + values[i] + "'";
+                        query += linker + " login = '" + values[i] + "'";
                     }else if(i == 8)
                     {
-                        query += " AND hasło = '" + values[i] + "'";
+                        query += linker + " hasło = '" + values[i] + "'";
                     }
                 }
             }
@@ -154,7 +154,7 @@ public class DataBaseFactory {
 
         }
         // funkcja tworząca odpowiednie query i ściągająca dane z bazy. Dane zwraca jako tablicę obiektów
-        if(table.equals("osoby")){
+        else if(table.equals("sprzet")){
 
             query += "osoby WHERE ";
 
@@ -198,31 +198,31 @@ public class DataBaseFactory {
                         {
                             if(i==0)
                             {
-                                query += " AND id_osoby = '" + values[i] + "'";
+                                query += linker + " id_osoby = '" + values[i] + "'";
                             }else if(i == 1)
                             {
-                                query += " AND id_lokalizacji = '" + values[i] + "'";
+                                query += linker + " id_lokalizacji = '" + values[i] + "'";
                             }else if(i == 2)
                             {
-                                query += " AND imie = '" + values[i] + "'";
+                                query += linker + " imie = '" + values[i] + "'";
                             }else if(i == 3)
                             {
-                                query += " AND nazwisko = '" + values[i] + "'";
+                                query += linker + " nazwisko = '" + values[i] + "'";
                             }else if(i == 4)
                             {
-                                query += " AND nr_tel = '" + values[i] + "'";
+                                query += linker + " nr_tel = '" + values[i] + "'";
                             }else if(i == 5)
                             {
-                                query += " AND adres = '" + values[i] + "'";
+                                query += linker + " adres = '" + values[i] + "'";
                             }else if(i == 6)
                             {
-                                query += " AND mail = '" + values[i] + "'";
+                                query += linker + " mail = '" + values[i] + "'";
                             }else if(i == 7)
                             {
-                                query += " AND login = '" + values[i] + "'";
+                                query += linker + " login = '" + values[i] + "'";
                             }else if(i == 8)
                             {
-                                query += " AND hasło = '" + values[i] + "'";
+                                query += linker + " hasło = '" + values[i] + "'";
                             }
                         }
                     }
@@ -256,17 +256,10 @@ public class DataBaseFactory {
                 e.printStackTrace();
             }
 
-
-
-
             Object [][] data = {{},{}};
             return data;
-        }else if(table.equals("sprzet")){
+        }else {
 
-            Object [][] data = {{},{}};
-            return data;
-        }
-        else{
             Object [][] data = {{},{}};
             return data;
         }
