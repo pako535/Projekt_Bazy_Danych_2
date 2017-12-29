@@ -273,11 +273,14 @@ public class MainWindow extends JFrame implements ActionListener{
             String linker;
             if(andBox.isSelected()) linker = " AND ";
             else linker = " OR ";
+
+
+
             if(index == 0){
                 boolean [] chosenParams = new boolean[9];
                 String [] params = new String [9];
 
-                table = " osoby ";
+                table = "osoby";
 
                 chosenParams[0] = peoplePersonIDBox.isSelected();
                 chosenParams[1] = peopleLocationIDBox.isSelected();
@@ -305,14 +308,16 @@ public class MainWindow extends JFrame implements ActionListener{
                 else if(source == findButton){
                     peopleTable = new JTable(dataBaseFactory.getData(table, chosenParams, params, linker), peopleTableColumnNames);
                 }
-                else{
+                else if(source == removeButton){
                     dataBaseFactory.removeData(table, chosenParams, params, linker);
                 }
+
+
             } else if(index == 1){
                 boolean [] chosenParams = new boolean[3];
                 String [] params = new String [3];
 
-                table = " lokalizacja ";
+                table = "lokalizacja";
 
                 chosenParams[0] = locationsLocationIDBox.isSelected();
                 chosenParams[1] = locationsCityBox.isSelected();
@@ -325,14 +330,16 @@ public class MainWindow extends JFrame implements ActionListener{
                     dataBaseFactory.addData(table, params);
                 } else if(source == findButton){
                     locationsTable = new JTable(dataBaseFactory.getData(table, chosenParams, params, linker), locationsTableColumnNames);
-                } else{
+                } else if(source == removeButton){
                     dataBaseFactory.removeData(table, chosenParams, params, linker);
                 }
-            } else{
+
+
+            } else if(index == 2){
                 boolean [] chosenParams = new boolean[8];
                 String [] params = new String [8];
 
-                table = " sprzet ";
+                table = "sprzet";
 
                 chosenParams[0] = equipmentEquipmentIdBox.isSelected();
                 chosenParams[1] = equipmentTypeBox.isSelected();
@@ -351,6 +358,8 @@ public class MainWindow extends JFrame implements ActionListener{
                 params[5] = equipmentLocationIDTxt.getText();
                 params[6] = equipmentPersonIDTxt.getText();
                 params[7] = equipmentModelTxt.getText();
+
+
                 if(source == addButton){
                     dataBaseFactory.addData(table, params);
                 } else if(source == findButton){

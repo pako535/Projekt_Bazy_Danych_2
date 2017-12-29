@@ -333,6 +333,40 @@ public class DataBaseFactory {
 
     public boolean addData(String table, String[] dataToAdd){
         // funkcja dodająca wiersz wypełniony danymi z dataToAdd do tabeli table
+        // INSERT INTO table_name (column1, column2, column3, ...)
+        // VALUES (value1, value2, value3, ...);
+
+        if(table.equals("osoby"))
+        {
+            String query = "INSERT INTO osoby (id_osoby, id_lokalizacji, imie, nazwisko, nr_tel, adres, mail, login, hasło) VALUES (";
+            String []tmp = {"id_osoby", "id_lokalizacji", "imie", "nazwisko", "nr_tel", "adres", "mail", "login", "hasło"};
+
+
+            for(int i = 0; i < dataToAdd.length; i++)
+            {
+                query += "'" + dataToAdd[i] + "'";
+            }
+            query += ";";
+
+
+            try{
+
+                statement = conn.createStatement();
+                resultSet = statement.executeQuery(query);
+            } catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
+
+
+        }else if(table.equals("sprzet"))
+        {
+
+        }else if(table.equals("lokalizacja"))
+        {
+
+        }
+
         boolean success = false;
         return success;
     }
