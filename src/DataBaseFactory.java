@@ -353,7 +353,7 @@ public class DataBaseFactory {
             try{
 
                 statement = conn.createStatement();
-                resultSet = statement.executeQuery(query);
+                statement.executeUpdate(query);
             } catch (SQLException e)
             {
                 e.printStackTrace();
@@ -362,6 +362,27 @@ public class DataBaseFactory {
 
         }else if(table.equals("sprzet"))
         {
+            // Narazie brak zabezpieczeń
+            String query = "INSERT INTO sprzet (id_sprzet, typ, marka, parametry, stan_sprzetu, id_lokalizacji, id_osoby, model) VALUES (";
+            String []tmp = {"id_sprzet", "typ", "marka", "parametry", "stan_sprzetu", "id_lokalizacji", "id_osoby", "model"};
+
+
+            for(int i = 0; i < dataToAdd.length; i++)
+            {
+                query += "'" + dataToAdd[i] + "', ";
+            }
+            query = query.substring(0,query.length() - 2);
+            query += ");";
+
+
+            try{
+
+                statement = conn.createStatement();
+                statement.executeUpdate(query);
+            } catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
 
         }else if(table.equals("lokalizacja"))
         {
