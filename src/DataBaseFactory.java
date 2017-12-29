@@ -46,88 +46,76 @@ public class DataBaseFactory {
         String query = "SELECT * FROM ";
         if(table.equals("osoby")){
             query += table + "osoby WHERE ";
-
-
             int dl = chosenParameters.length;
             boolean flag = false;
-            for(int i = 0; i < dl ; i++)
-            {
-                if(chosenParameters[i] == true & flag == false)
-                {
+            for(int i = 0; i < dl ; i++) {
+                if(chosenParameters[i] == true & flag == false) {
                     flag = true;
-                    if(i==0)
-                    {
+                    if(i==0) {
                         query += "id_osoby = '" + values[i] + "'";
-                    }else if(i == 1)
-                    {
+                    }
+                    else if(i == 1) {
                         query += "id_lokalizacji = '" + values[i] + "'";
-                    }else if(i == 2)
-                    {
+                    }
+                    else if(i == 2) {
                         query += "imie = '" + values[i] + "'";
-                    }else if(i == 3)
-                    {
+                    }
+                    else if(i == 3) {
                         query += "nazwisko = '" + values[i] + "'";
-                    }else if(i == 4)
-                    {
+                    }
+                    else if(i == 4) {
                         query += "nr_tel = '" + values[i] + "'";
-                    }else if(i == 5)
-                    {
+                    }
+                    else if(i == 5) {
                         query += "adres = '" + values[i] + "'";
-                    }else if(i == 6)
-                    {
+                    }
+                    else if(i == 6) {
                         query += "mail = '" + values[i] + "'";
-                    }else if(i == 7)
-                    {
+                    }
+                    else if(i == 7) {
                         query += "login = '" + values[i] + "'";
-                    }else if(i == 8)
-                    {
+                    }
+                    else if(i == 8) {
                         query += "hasło = '" + values[i] + "'";
                     }
                 }
-                else if(chosenParameters[i] == true & flag == true)
-                {
-                    if(i==0)
-                    {
+                else if(chosenParameters[i] == true & flag == true) {
+                    if(i==0) {
                         query += linker + " id_osoby = '" + values[i] + "'";
-                    }else if(i == 1)
-                    {
+                    }
+                    else if(i == 1) {
                         query += linker + " id_lokalizacji = '" + values[i] + "'";
-                    }else if(i == 2)
-                    {
+                    }
+                    else if(i == 2) {
                         query += linker + " imie = '" + values[i] + "'";
-                    }else if(i == 3)
-                    {
+                    }
+                    else if(i == 3) {
                         query += linker + " nazwisko = '" + values[i] + "'";
-                    }else if(i == 4)
-                    {
+                    }
+                    else if(i == 4) {
                         query += linker + " nr_tel = '" + values[i] + "'";
-                    }else if(i == 5)
-                    {
+                    }
+                    else if(i == 5) {
                         query += linker + " adres = '" + values[i] + "'";
-                    }else if(i == 6)
-                    {
+                    }
+                    else if(i == 6) {
                         query += linker + " mail = '" + values[i] + "'";
-                    }else if(i == 7)
-                    {
+                    }
+                    else if(i == 7) {
                         query += linker + " login = '" + values[i] + "'";
-                    }else if(i == 8)
-                    {
+                    }
+                    else if(i == 8) {
                         query += linker + " hasło = '" + values[i] + "'";
                     }
                 }
             }
             query +=";";
 
-
-            //Object [][] data ;
-            List list = new ArrayList();
+            List<Object[]> list = new ArrayList<Object[]>();
             try{
-
                 statement = conn.createStatement();
                 resultSet = statement.executeQuery(query);
-                //System.out.println(resultSet);
                 while(resultSet.next()) {
-
                     Object [] tmp = new Object[9];
                     tmp[0] = resultSet.getString("id_osoby");
                     tmp[1] = resultSet.getString("id_lokalizacji");
@@ -138,100 +126,84 @@ public class DataBaseFactory {
                     tmp[6] = resultSet.getString("mail");
                     tmp[7] = resultSet.getString("login");
                     tmp[8] = resultSet.getString("hasło");
-                    //*********************************************************
+                                    //*********************************************************
                     list.add(tmp);  // lista wierszy które trzeba by wstawić do JTable
                 }                   //**********************************************************
-            } catch (SQLException e)
-            {
+            }
+            catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
-
-            Object [][] data = {{"dupa","dupa","dupa"},{"cycki","cycki","cycki"}};
+            Object [][] data = new Object[list.size()][];
+            for(int i = 0; i < list.size(); i++){
+                data[i] = list.get(i);
+            }
             return data;
-
         }
-        // funkcja tworząca odpowiednie query i ściągająca dane z bazy. Dane zwraca jako tablicę obiektów
         else if(table.equals("sprzet")){
-
             query += "sprzet WHERE ";
-
                 int dl = chosenParameters.length;
                 boolean flag = false;
-                    for(int i = 0; i < dl ; i++)
-                    {
-                        if(chosenParameters[i] == true & flag == false)
-                        {
+                    for(int i = 0; i < dl ; i++) {
+                        if(chosenParameters[i] == true & flag == false) {
                             flag = true;
-                            if(i==0)
-                            {
+                            if(i==0) {
                                 query += "id_sprzet = '" + values[i] + "'";
-                            }else if(i == 1)
-                            {
+                            }
+                            else if(i == 1) {
                                 query += "typ = '" + values[i] + "'";
-                            }else if(i == 2)
-                            {
+                            }
+                            else if(i == 2) {
                                 query += "marka = '" + values[i] + "'";
-                            }else if(i == 3)
-                            {
+                            }
+                            else if(i == 3) {
                                 query += "parametry = '" + values[i] + "'";
-                            }else if(i == 4)
-                            {
+                            }
+                            else if(i == 4) {
                                 query += "stan_sprzetu = '" + values[i] + "'";
-                            }else if(i == 5)
-                            {
+                            }
+                            else if(i == 5) {
                                 query += "id_lokalizacji = '" + values[i] + "'";
-                            }else if(i == 6)
-                            {
+                            }
+                            else if(i == 6) {
                                 query += "id_osoby = '" + values[i] + "'";
-                            }else if(i == 7)
-                            {
+                            }
+                            else if(i == 7) {
                                 query += "model = '" + values[i] + "'";
                             }
                         }
-                        else if(chosenParameters[i] == true & flag == true)
-                        {
-                            if(i==0)
-                            {
+                        else if(chosenParameters[i] == true & flag == true) {
+                            if(i==0) {
                                 query += linker + " id_sprzet = '" + values[i] + "'";
-                            }else if(i == 1)
-                            {
+                            }
+                            else if(i == 1) {
                                 query += linker + " typ = '" + values[i] + "'";
-                            }else if(i == 2)
-                            {
+                            }
+                            else if(i == 2) {
                                 query += linker + " marka = '" + values[i] + "'";
-                            }else if(i == 3)
-                            {
+                            }
+                            else if(i == 3) {
                                 query += linker + " parametry = '" + values[i] + "'";
-                            }else if(i == 4)
-                            {
+                            }
+                            else if(i == 4) {
                                 query += linker + " stan_sprzetu = '" + values[i] + "'";
-                            }else if(i == 5)
-                            {
+                            }
+                            else if(i == 5) {
                                 query += linker + " id_lokalizacji = '" + values[i] + "'";
-                            }else if(i == 6)
-                            {
+                            }
+                            else if(i == 6) {
                                 query += linker + " id_osoby = '" + values[i] + "'";
-                            }else if(i == 7)
-                            {
+                            }
+                            else if(i == 7) {
                                 query += linker + " model = '" + values[i] + "'";
                             }
-
                         }
                     }
             query +=";";
-
-
-            //Object [][] data ;
-            List list = new ArrayList();
+            List<Object[]> list = new ArrayList<Object[]>();
             try{
-
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
-            //System.out.println(resultSet);
                 while(resultSet.next()) {
-
                     Object [] tmp = new Object[8];
                     tmp[0] = resultSet.getString("id_sprzet");
                     tmp[1] = resultSet.getString("typ");
@@ -241,86 +213,70 @@ public class DataBaseFactory {
                     tmp[5] = resultSet.getString("id_lokalizacji");
                     tmp[6] = resultSet.getString("id_osoby");
                     tmp[7] = resultSet.getString("model");
-
                                     //*********************************************************
                     list.add(tmp);  // lista wierszy które trzeba by wstawić do JTable
                 }                   //**********************************************************
-            } catch (SQLException e)
-            {
+            }
+            catch (SQLException e) {
                 e.printStackTrace();
             }
-
-            Object [][] data = {{},{}};
+            Object [][] data = new Object[list.size()][];
+            for(int i = 0; i < list.size(); i++){
+                data[i] = list.get(i);
+            }
             return data;
-        }else if(table.equals("lokalizacja")){
-
+        }
+        else {
             query += "lokalizacja WHERE ";
-
             int dl = chosenParameters.length;
             boolean flag = false;
-            for(int i = 0; i < dl ; i++)
-            {
-                if(chosenParameters[i] == true & flag == false)
-                {
+            for(int i = 0; i < dl ; i++) {
+                if(chosenParameters[i] == true & flag == false) {
                     flag = true;
-                    if(i==0)
-                    {
+                    if(i==0) {
                         query += "id_lokalizacja = '" + values[i] + "'";
-                    }else if(i == 1)
-                    {
+                    }
+                    else if(i == 1) {
                         query += "miasto = '" + values[i] + "'";
-                    }else if(i == 2)
-                    {
+                    }
+                    else if(i == 2) {
                         query += "kod_pocztowy = '" + values[i] + "'";
                     }
                 }
-                else if(chosenParameters[i] == true & flag == true)
-                {
-                    if(i==0)
-                    {
+                else if(chosenParameters[i] == true & flag == true) {
+                    if(i==0) {
                         query += linker + " id_lokalizacja = '" + values[i] + "'";
-                    }else if(i == 1)
-                    {
+                    }
+                    else if(i == 1) {
                         query += linker + " miasto = '" + values[i] + "'";
-                    }else if(i == 2)
-                    {
+                    }
+                    else if(i == 2) {
                         query += linker + " kod_pocztowy = '" + values[i] + "'";
                     }
-
                 }
             }
             query +=";";
-
-
-            //Object [][] data ;
-            List list = new ArrayList();
+            List<Object[]> list = new ArrayList<Object[]>();
             try{
-
                 statement = conn.createStatement();
                 resultSet = statement.executeQuery(query);
                 //System.out.println(resultSet);
                 while(resultSet.next()) {
-
                     Object [] tmp = new Object[3];
                     tmp[0] = resultSet.getString("id_lokalizacja");
                     tmp[1] = resultSet.getString("miasto");
                     tmp[2] = resultSet.getString("kod_pocztowy");
-
-
                     //*********************************************************
                     list.add(tmp);  // lista wierszy które trzeba by wstawić do JTable
                 }                   //**********************************************************
-            } catch (SQLException e)
-            {
+            }
+            catch (SQLException e) {
                 e.printStackTrace();
             }
-
-
-            Object [][] data = {{},{}};
-            return data;
-        }
-        else{
-            Object [][] data = {{},{}};
+            Object [][] data = new Object[list.size()][];
+            for(int i = 0; i < list.size(); i++){
+                data[i] = list.get(i);
+            }
             return data;
         }
     }
