@@ -274,6 +274,9 @@ public class MainWindow extends JFrame implements ActionListener{
             String linker;
             if(andBox.isSelected()) linker = " AND ";
             else linker = " OR ";
+
+
+
             if(index == 0){
                 boolean [] chosenParams = new boolean[9];
                 String [] params = new String [9];
@@ -307,9 +310,11 @@ public class MainWindow extends JFrame implements ActionListener{
                     DefaultTableModel tableModel =  new DefaultTableModel(dataBaseFactory.getData(table, chosenParams, params, linker), peopleTableColumnNames);
                     peopleTable.setModel(tableModel);
                 }
-                else{
+                else if(source == removeButton){
                     dataBaseFactory.removeData(table, chosenParams, params, linker);
                 }
+
+
             } else if(index == 1){
                 boolean [] chosenParams = new boolean[3];
                 String [] params = new String [3];
@@ -331,7 +336,9 @@ public class MainWindow extends JFrame implements ActionListener{
                 } else{
                     dataBaseFactory.removeData(table, chosenParams, params, linker);
                 }
-            } else{
+
+
+            } else if(index == 2){
                 boolean [] chosenParams = new boolean[8];
                 String [] params = new String [8];
 
@@ -354,6 +361,8 @@ public class MainWindow extends JFrame implements ActionListener{
                 params[5] = equipmentLocationIDTxt.getText();
                 params[6] = equipmentPersonIDTxt.getText();
                 params[7] = equipmentModelTxt.getText();
+
+
                 if(source == addButton){
                     dataBaseFactory.addData(table, params);
                 } else if(source == findButton){
