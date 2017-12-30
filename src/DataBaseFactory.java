@@ -314,6 +314,7 @@ public class DataBaseFactory {
                         resultSet.next();
                         int x = resultSet.getInt(1);
                         dataToAdd[i] = String.valueOf(x);
+                        JOptionPane.showMessageDialog(frame,"Numer id_osoby został zignorowany i nadany wg kolejności w bazie danych");
                     }catch (SQLException e)
                     {
                         e.printStackTrace();
@@ -343,14 +344,14 @@ public class DataBaseFactory {
                 if(tmp[i] == "mail")
                     if(!checkEmail(dataToAdd[i]))
                     {
-                        JOptionPane.showMessageDialog(frame, "Podany email jest nie prawidłowy");
+                        JOptionPane.showMessageDialog(frame, "Podany email jest nie prawidłowy lub został nie podany");
                         flag = false;
                     }
 
                 if(tmp[i] == "login")
                     if(!checkLogin(dataToAdd[i]))
                     {
-                        JOptionPane.showMessageDialog(frame,"Podany login już istnieje lub zawiera znaki nie dozowolone (' , . / \")");
+                        JOptionPane.showMessageDialog(frame,"Podany login już istnieje lub zawiera znaki nie dozowolone (' , . / \") lub pole jest puste");
                         flag = false;
                     }
 
@@ -364,7 +365,7 @@ public class DataBaseFactory {
 
                 query += "'" + dataToAdd[i] + "', ";
             }
-            
+
             query = query.substring(0,query.length() - 2);
             query += ");";
 
@@ -407,6 +408,58 @@ public class DataBaseFactory {
 
         }else if(table.equals("lokalizacja"))
         {
+            String query = "INSERT INTO lokalizacja (id_lokalizacja, miasto, kod_pocztowy) VALUES (";
+            String []tmp = {"id_lokalizacja", "miasto", "kod_pocztowy"};
+            boolean flag = true;
+
+            for(int i = 0; i < dataToAdd.length; i++)
+            {
+                if(tmp[i] == "id_lokalizacja")
+                {
+                    try {
+                        statement = conn.createStatement();
+                        resultSet = statement.executeQuery("SELECT count(*) FROM lokalizacja");
+
+                        resultSet.next();
+                        int x = resultSet.getInt(1);
+                        dataToAdd[i] = String.valueOf(x);
+
+                        JOptionPane.showMessageDialog(frame,"Numer id_lokalizacji został zignorowany i nadany wg kolejności w bazie danych");
+                    }catch (SQLException e)
+                    {
+                        e.printStackTrace();
+                    }
+
+                    if(tmp[i] == "miasto")
+                        if(!checkCity(dataToAdd[i]))
+                        {
+                            flag = false;
+                            JOptionPane.showMessageDialog(frame,"Podane miasto zawiera cyfry lub pole jest puste");
+                        }
+                    if(tmp[i] == "kod_pocztowy")
+                        if(!checkPostCode(dataToAdd[i]))
+                        {
+                            flag = false;
+                            JOptionPane.showMessageDialog(frame,"Podany kod pocztowy jest błędny\nPowinien wyglądać na przykład tak: '65-012'");
+                        }
+
+
+                }
+
+                query += "'" + dataToAdd[i] + "', ";
+            }
+            query = query.substring(0,query.length() - 2);
+            query += ");";
+
+            if(flag != false) {
+                try {
+
+                    statement = conn.createStatement();
+                    statement.executeUpdate(query);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
 
         }
 
@@ -455,11 +508,46 @@ public class DataBaseFactory {
 
         if(veriable.indexOf(".") > 0 || veriable.indexOf(",") >0 || veriable.indexOf("/") > 0 || veriable.indexOf("'" ) > 0 || veriable.indexOf("\"") > 0)
             return false;
+        if(veriable.isEmpty())
+            return false;
+
         return true;
     }
 
     public boolean checkPass(String veriable){
         if(veriable.length() <= 5)
+            return false;
+        if(veriable.isEmpty())
+            return false;
+        return true;
+    }
+
+    public boolean checkCity(String veriable){
+
+        for(int i = 0; i <=9; i++)
+            if(veriable.indexOf(i) > 0)
+                return false;
+
+        if(veriable.isEmpty())
+            return false;
+
+        return true;
+    }
+
+    public boolean checkPostCode(String veriable){
+
+        if(veriable.length() != 6)
+            return false;
+
+        String two = veriable.substring(0,2);
+        String three = veriable.substring(3,6);
+        String dash = veriable.substring(2,3);
+
+        if(!StringUtils.isStrictlyNumeric(two))
+            return false;
+        if(!StringUtils.isStrictlyNumeric(three))
+            return  false;
+        if(!dash.equals("-"))
             return false;
         return true;
     }

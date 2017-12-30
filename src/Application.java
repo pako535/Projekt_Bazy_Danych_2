@@ -4,9 +4,8 @@ public class Application {
 
     public static void main(String[] args){
 
-//          DataBaseFactory tmp = new DataBaseFactory();
-//
-//            System.out.print(tmp.checkLogin("admina."));
+//        DataBaseFactory tmp = new DataBaseFactory();
+//            System.out.print(tmp.checkPostCode("a5-012"));
 
         LogInWindow logInWindow = new LogInWindow();
         logInWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
