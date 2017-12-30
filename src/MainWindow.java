@@ -66,9 +66,8 @@ public class MainWindow extends JFrame implements ActionListener{
         peopleCard.setLayout(null);
         peopleScroll = new JScrollPane();
         peopleScroll.setBounds(10,15, 770,350);
-        Object [][] dataaa = {{"dupa", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki"},
-                {"dupa", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki"}};
-        data = dataaa ;//new DataBaseFactory().getData("osoby", chosenParams, values );
+        Object [][] dataaa = {{"", "", "", "", "", "", "", "", ""},{"", "", "", "", "", "", "", "", ""}};
+        data = dataaa ;
         peopleTable = new JTable(data, peopleTableColumnNames);
         peopleScroll.setViewportView(peopleTable);
 
@@ -136,8 +135,8 @@ public class MainWindow extends JFrame implements ActionListener{
         locationsCard.setLayout(null);
         locationsScroll = new JScrollPane();
         locationsScroll.setBounds(125,15,500, 350);
-        Object [][] dataaa = {{"dupa","dupa","dupa"},{"cycki","cycki","cycki"}};
-        data = dataaa; // DataBaseFactory().getData("lokalizacja", chosenParams, values );
+        Object [][] dataaa = {{"","",""},{"","",""}};
+        data = dataaa;
         locationsTable = new JTable(data, locationsTableColumnNames);
         locationsScroll.setViewportView(locationsTable);
 
@@ -169,9 +168,10 @@ public class MainWindow extends JFrame implements ActionListener{
         equipmentCard.setLayout(null);
         equipmentScroll = new JScrollPane();
         equipmentScroll.setBounds(20,15,750,350);
-        Object [][] dataaa = {{"dupa", "dupa", "cycki", "dupa", "cycki", "dupa", "cycki", "cycki"},
-                {"dupa", "dupa", "cycki", "dupa", "cycki", "dupa", "dupa", "cycki"}};
-        data = dataaa; // DataBaseFactory().getData("sprzet", chosenParams, values );
+        Object [][] dataaa = {{"", "", "", "", "", "", "", ""},
+                {"", "", "", "", "", "", "", ""}};
+
+        data = dataaa;
         equipmentTable = new JTable(data, equipmentTableColumnNames);
         equipmentScroll.setViewportView(equipmentTable);
 
@@ -366,6 +366,7 @@ public class MainWindow extends JFrame implements ActionListener{
                     dataBaseFactory.addData(table, params);
                 }
                 else if(source == findButton){
+
                     DefaultTableModel tableModel =  new DefaultTableModel(dataBaseFactory.getData(table, chosenParams, params, linker), peopleTableColumnNames);
                     peopleTable.setModel(tableModel);
                 }
