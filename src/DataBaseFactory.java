@@ -387,23 +387,58 @@ public class DataBaseFactory {
             // Narazie brak zabezpieczeń
             String query = "INSERT INTO sprzet (id_sprzet, typ, marka, parametry, stan_sprzetu, id_lokalizacji, id_osoby, model) VALUES (";
             String []tmp = {"id_sprzet", "typ", "marka", "parametry", "stan_sprzetu", "id_lokalizacji", "id_osoby", "model"};
-
+            boolean flag = true;
 
             for(int i = 0; i < dataToAdd.length; i++)
             {
+
+                if(tmp[i] == "id_sprzet") {
+                    try {
+                        statement = conn.createStatement();
+                        resultSet = statement.executeQuery("SELECT count(*) FROM sprzet");
+
+                        resultSet.next();
+                        int x = resultSet.getInt(1);
+                        dataToAdd[i] = String.valueOf(x);
+
+                        JOptionPane.showMessageDialog(frame, "Numer id_sprzetu został zignorowany i nadany wg kolejności w bazie danych");
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if(tmp[i] == "stan_sprzetu") {
+                    checkEquipmentStatus(dataToAdd[i]);
+                }
+
+                if(tmp[i] == "id_lokalizacji")
+                    if(!checkIdLockation(dataToAdd[i]))
+                    {
+                        JOptionPane.showMessageDialog(frame,"Podane Id_lokalizacji nie istnieje lub zostawiłeś/łaś puste pole");
+                        flag = false;
+                    }
+
+                if(tmp[i] == "id_osoby")
+                    if(!checkIdLockation(dataToAdd[i]))
+                    {
+                        JOptionPane.showMessageDialog(frame,"Podane Id_osoby nie istnieje lub zostawiłeś/łaś puste pole");
+                        flag = false;
+                    }
+
+
                 query += "'" + dataToAdd[i] + "', ";
             }
             query = query.substring(0,query.length() - 2);
             query += ");";
 
+            if(flag!=false) {
+                try {
 
-            try{
-
-                statement = conn.createStatement();
-                statement.executeUpdate(query);
-            } catch (SQLException e)
-            {
-                e.printStackTrace();
+                    statement = conn.createStatement();
+                    statement.executeUpdate(query);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
 
         }else if(table.equals("lokalizacja"))
@@ -414,8 +449,7 @@ public class DataBaseFactory {
 
             for(int i = 0; i < dataToAdd.length; i++)
             {
-                if(tmp[i] == "id_lokalizacja")
-                {
+                if(tmp[i] == "id_lokalizacja") {
                     try {
                         statement = conn.createStatement();
                         resultSet = statement.executeQuery("SELECT count(*) FROM lokalizacja");
@@ -424,27 +458,26 @@ public class DataBaseFactory {
                         int x = resultSet.getInt(1);
                         dataToAdd[i] = String.valueOf(x);
 
-                        JOptionPane.showMessageDialog(frame,"Numer id_lokalizacji został zignorowany i nadany wg kolejności w bazie danych");
-                    }catch (SQLException e)
-                    {
+                        JOptionPane.showMessageDialog(frame, "Numer id_lokalizacji został zignorowany i nadany wg kolejności w bazie danych");
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     }
-
-                    if(tmp[i] == "miasto")
-                        if(!checkCity(dataToAdd[i]))
-                        {
-                            flag = false;
-                            JOptionPane.showMessageDialog(frame,"Podane miasto zawiera cyfry lub pole jest puste");
-                        }
-                    if(tmp[i] == "kod_pocztowy")
-                        if(!checkPostCode(dataToAdd[i]))
-                        {
-                            flag = false;
-                            JOptionPane.showMessageDialog(frame,"Podany kod pocztowy jest błędny\nPowinien wyglądać na przykład tak: '65-012'");
-                        }
-
-
                 }
+                if(tmp[i] == "miasto")
+                    if(!checkCity(dataToAdd[i]))
+                    {
+                        flag = false;
+                        JOptionPane.showMessageDialog(frame,"Podane miasto zawiera cyfry lub pole jest puste");
+                    }
+                if(tmp[i] == "kod_pocztowy")
+                    if(!checkPostCode(dataToAdd[i]))
+                    {
+                        flag = false;
+                        JOptionPane.showMessageDialog(frame,"Podany kod pocztowy jest błędny\nPowinien wyglądać na przykład tak: '65-012'");
+                    }
+
+
+
 
                 query += "'" + dataToAdd[i] + "', ";
             }
@@ -613,6 +646,50 @@ public class DataBaseFactory {
             return  false;
         if(!dash.equals("-"))
             return false;
+        return true;
+    }
+
+    public String checkEquipmentStatus(String veriable){
+        if(veriable.isEmpty())
+            veriable = "sprawny";
+        if(veriable != "sprawny" & veriable != "niesprawny")
+            veriable = "sprawny";
+        return veriable;
+    }
+
+    public  boolean checkIdLockation(String veriable){
+        String  query = "SELECT * FROM sprzet WHERE id_lokalizacji = '" + veriable + "';";
+        try {
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+            if(!resultSet.next())
+                return false;
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        if(veriable.isEmpty())
+            return false;
+
+        return true;
+    }
+
+    public  boolean checkIdOsoby(String veriable){
+        String  query = "SELECT * FROM sprzet WHERE id_osoby = '" + veriable + "';";
+        try {
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+            if(!resultSet.next())
+                return false;
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        if(veriable.isEmpty())
+            return false;
+
         return true;
     }
 }
