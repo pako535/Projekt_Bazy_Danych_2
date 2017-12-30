@@ -2,6 +2,10 @@ import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.StringUtils;
+
+import javax.swing.*;
+
 
 public class DataBaseFactory {
 
@@ -291,28 +295,89 @@ public class DataBaseFactory {
         // funkcja dodająca wiersz wypełniony danymi z dataToAdd do tabeli table
         // INSERT INTO table_name (column1, column2, column3, ...)
         // VALUES (value1, value2, value3, ...);
+        JFrame frame = new JFrame();
 
         if(table.equals("osoby"))
         {
             String query = "INSERT INTO osoby (id_osoby, id_lokalizacji, imie, nazwisko, nr_tel, adres, mail, login, hasło) VALUES (";
             String []tmp = {"id_osoby", "id_lokalizacji", "imie", "nazwisko", "nr_tel", "adres", "mail", "login", "hasło"};
-
+            boolean flag = true;
 
             for(int i = 0; i < dataToAdd.length; i++)
             {
+                if(tmp[i] == "id_osoby")
+                {
+                    try {
+                        statement = conn.createStatement();
+                        resultSet = statement.executeQuery("SELECT count(*) FROM osoby");
+
+                        resultSet.next();
+                        int x = resultSet.getInt(1);
+                        dataToAdd[i] = String.valueOf(x);
+                    }catch (SQLException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+                if(tmp[i] == "id_lokalizacji")
+                    if(!checkLockationId(dataToAdd[i]))
+                    {
+                        JOptionPane.showMessageDialog(frame,"Podane ID Lokalizacji nie jest liczbą lub jest puste");
+                        flag = false;
+                    }
+
+
+                if(tmp[i] == "imie" || tmp[i] == "nazwisko")
+                    if(dataToAdd[i].isEmpty()) {
+                        JOptionPane.showMessageDialog(frame,"Imię lub Nazwisko jest puste");
+                        flag = false;
+                    }
+
+                if(tmp[i] == "nr_tel")
+                    if(!checkPhoneNumber(dataToAdd[i])) {
+                        JOptionPane.showMessageDialog(frame, "Podany numer telefonu jest błedny \nPowienien zawierać 9 cyfr");
+                        flag = false;
+                    }
+
+                if(tmp[i] == "mail")
+                    if(!checkEmail(dataToAdd[i]))
+                    {
+                        JOptionPane.showMessageDialog(frame, "Podany email jest nie prawidłowy");
+                        flag = false;
+                    }
+
+                if(tmp[i] == "login")
+                    if(!checkLogin(dataToAdd[i]))
+                    {
+                        JOptionPane.showMessageDialog(frame,"Podany login już istnieje lub zawiera znaki nie dozowolone (' , . / \")");
+                        flag = false;
+                    }
+
+                if(tmp[i] == "hasło")
+                    if(!checkPass(dataToAdd[i]))
+                    {
+                        JOptionPane.showMessageDialog(frame,"Hasło powinno być dłuższe niż 5 znaków");
+                        flag = false;
+                    }
+
+
                 query += "'" + dataToAdd[i] + "', ";
             }
+            
             query = query.substring(0,query.length() - 2);
             query += ");";
 
-
-            try{
-
-                statement = conn.createStatement();
-                statement.executeUpdate(query);
-            } catch (SQLException e)
+            if(flag != false)
             {
-                e.printStackTrace();
+                try{
+
+                    statement = conn.createStatement();
+                    statement.executeUpdate(query);
+                } catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
             }
 
 
@@ -347,5 +412,55 @@ public class DataBaseFactory {
 
         boolean success = false;
         return success;
+    }
+
+    public boolean checkLockationId(String veriable){
+        if(veriable.isEmpty())
+            return false;
+        if(!StringUtils.isStrictlyNumeric(veriable))
+            return false;
+        return true;
+    }
+
+    public boolean checkPhoneNumber(String veriable){
+        if(veriable.isEmpty())
+            return false;
+        if(veriable.length() != 9)
+            return false;
+        if(!StringUtils.isStrictlyNumeric(veriable))
+            return false;
+
+        return true;
+    }
+
+    public boolean checkEmail(String veriable){
+        if(veriable.indexOf("@") < 0 || veriable.indexOf("@") == 0 || veriable.indexOf("@") == veriable.length() -1)
+            return false;
+
+        return true;
+    }
+
+    public boolean checkLogin(String veriable){
+
+        String  query = "SELECT * FROM osoby WHERE login = '" + veriable + "';";
+        try {
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+            if(resultSet.next())
+                return false;
+        }catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
+        if(veriable.indexOf(".") > 0 || veriable.indexOf(",") >0 || veriable.indexOf("/") > 0 || veriable.indexOf("'" ) > 0 || veriable.indexOf("\"") > 0)
+            return false;
+        return true;
+    }
+
+    public boolean checkPass(String veriable){
+        if(veriable.length() <= 5)
+            return false;
+        return true;
     }
 }
