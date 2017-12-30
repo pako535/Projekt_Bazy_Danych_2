@@ -467,6 +467,70 @@ public class DataBaseFactory {
         return success;
     }
 
+    public String[] getViewsNames(){
+        String query = "SELECT TABLE_NAME FROM information_schema.tables WHERE TABLE_TYPE LIKE 'VIEW' AND TABLE_SCHEMA LIKE 'mydb';";
+        List<String> list = new ArrayList<String>();
+        try{
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()) {
+                list.add(resultSet.getString("TABLE_NAME"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String [] names = new String[list.size()];
+        for(int i = 0; i < list.size(); i++) {
+            names[i] = list.get(i);
+        }
+        return names;
+    }
+
+    public String[] getViewColumnsNames(String view){
+        String query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '" + view + "';";
+        List<String> list = new ArrayList<String>();
+        try{
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()) {
+                 list.add(resultSet.getString("COLUMN_NAME"));
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String [] columnsNames = new String[list.size()];
+        for(int i = 0; i < list.size(); i++){
+            columnsNames[i] = list.get(i);
+        }
+        return columnsNames;
+    }
+
+    public Object[][] getView(String view, int numberOFColumns){
+        String query = "SELECT * FROM " + view + ";";
+        List<Object[]> list = new ArrayList<Object[]>();
+        try{
+            statement = conn.createStatement();
+            resultSet = statement.executeQuery(query);
+            while(resultSet.next()) {
+                Object [] tmp = new Object[numberOFColumns];
+                for(int i = 1; i <= numberOFColumns; i++){
+                    tmp[i - 1] = resultSet.getString(i);
+                }
+                list.add(tmp);
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Object [][] data = new Object[list.size()][numberOFColumns];
+        for(int i = 0; i < list.size(); i++){
+            data[i] = list.get(i);
+        }
+        return data;
+    }
+
     public boolean checkLockationId(String veriable){
         if(veriable.isEmpty())
             return false;

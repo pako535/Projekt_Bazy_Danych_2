@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,10 +9,10 @@ public class MainWindow extends JFrame implements ActionListener{
     private final int WindowWidth = 800;
     private final int WindowHeight = 600;
     JTabbedPane tabbedPane;
-    JScrollPane peopleScroll, locationsScroll, equipmentScroll;
-    JPanel peopleCard, locationsCard, equipmentCard, actionPanel;
+    JScrollPane peopleScroll, locationsScroll, equipmentScroll, viewsListScroll, viewScroll;
+    JPanel peopleCard, locationsCard, equipmentCard, viewsCard, viewCardContainer, viewScrollPanel, actionPanel;
     JButton addButton, findButton, removeButton;
-    JTable peopleTable, locationsTable, equipmentTable;
+    JTable peopleTable, locationsTable, equipmentTable, viewTable;
     JLabel alternativeLabel, conjuctionLabel;
     JTextField peoplePersonIDTxt, peopleLocationIDTxt, peopleNameTxt, peopleSurnameTxt, peoplePhoneNumberTxt,
             peopleAddressTxt, peopleMailTxt, peopleLoginTxt, peopleHashTxt, locationsLocationIDTxt, locationsCityTxt,
@@ -21,9 +22,12 @@ public class MainWindow extends JFrame implements ActionListener{
             peopleAddressBox, peopleMailBox, peopleLoginBox, peopleHashBox, locationsLocationIDBox, locationsCityBox,
             locationsPostCodeBox, equipmentEquipmentIdBox, equipmentTypeBox, equipmentBrandBox, equipmentParamsBox,
             equipmentConditionBox, equipmentLocationIDBox, equipmentPersonIDBox, equipmentModelBox, orBox, andBox;
+    JCheckBox [] viewsBoxes;
+    String [] viewsNames, viewColumnsNames;
     private final static String peopleTableCard = "People";
     private final static String locationsTableCard = "Locations";
     private final static String equipmentTableCard = "Equipment";
+    private final static String viewTableCard = "Views";
     private final static String [] peopleTableColumnNames = {"id_osoby", "id_lokalizacji", "imie", "nazwisko", "nr_tel","adres","mail","login", "hasło"};
     private final static String [] locationsTableColumnNames = {"id_lokalizacji", "miasto", "kod_pocztowy"};
     private final static String [] equipmentTableColumnNames = {"id_sprzetu", "typ", "marka", "parametry", "stan_sprzetu","id_lokalizacji","id_osoby","model"};
@@ -45,11 +49,14 @@ public class MainWindow extends JFrame implements ActionListener{
         createPeopleCard();
         createLocationsCard();
         createEquipmentCard();
+        createViewsCard();
 
         tabbedPane = new JTabbedPane();
         tabbedPane.add(peopleCard, peopleTableCard);
         tabbedPane.add(locationsCard, locationsTableCard);
         tabbedPane.add(equipmentCard, equipmentTableCard);
+        tabbedPane.add(viewsCard, viewTableCard);
+
         tabbedPane.setBounds(0,0,800,500);
         add(tabbedPane);
     }
@@ -222,6 +229,39 @@ public class MainWindow extends JFrame implements ActionListener{
         equipmentCard.add(equipmentModelTxt);
     }
 
+    private void createViewsCard(){
+        DataBaseFactory dataBaseFactory = new DataBaseFactory();
+        Dimension spacing = new Dimension(15,15);
+        viewsCard = new JPanel();
+        viewsCard.setLayout(new BoxLayout(viewsCard, BoxLayout.PAGE_AXIS));
+        viewCardContainer = new JPanel();
+        viewCardContainer.setLayout(new BoxLayout(viewCardContainer, BoxLayout.LINE_AXIS));
+        viewsCard.add(Box.createRigidArea(spacing));
+        viewsCard.add(viewCardContainer);
+        viewsCard.add(Box.createRigidArea(spacing));
+        viewsListScroll = new JScrollPane();
+        viewsNames = dataBaseFactory.getViewsNames();
+        viewScrollPanel = new JPanel();
+        viewScrollPanel.setLayout(new BoxLayout(viewScrollPanel, BoxLayout.PAGE_AXIS));
+        viewsListScroll.setViewportView(viewScrollPanel);
+        viewsBoxes = new JCheckBox[viewsNames.length];
+        for(int i = 0; i < viewsNames.length; i++){
+            viewsBoxes[i] = new JCheckBox();
+            viewsBoxes[i].setText(viewsNames[i]);
+            viewsBoxes[i].addActionListener(this);
+            viewScrollPanel.add(viewsBoxes[i]);
+        }
+        viewsBoxes[0].setSelected(true);
+        viewColumnsNames = dataBaseFactory.getViewColumnsNames(viewsNames[0]);
+        viewTable = new JTable(dataBaseFactory.getView(viewsNames[0], viewColumnsNames.length), viewColumnsNames);
+        viewScroll = new JScrollPane(viewTable);
+        viewCardContainer.add(Box.createRigidArea(spacing));
+        viewCardContainer.add(viewsListScroll);
+        viewCardContainer.add(Box.createRigidArea(spacing));
+        viewCardContainer.add(viewScroll);
+        viewCardContainer.add(Box.createRigidArea(spacing));
+    }
+
     private void createActionPanel(){
         actionPanel = new JPanel();
         actionPanel.setLayout(null);
@@ -267,6 +307,27 @@ public class MainWindow extends JFrame implements ActionListener{
             if(andBox.isSelected()) andBox.setSelected(false);
             else andBox.setSelected(true);
         }
+        else if(tabbedPane.getSelectedIndex() == 3){
+            int viewNumber = 0;
+            for(int i = 0; i < viewsBoxes.length; i++){
+                if(source == viewsBoxes[i]){
+                    if(viewsBoxes[i].isSelected()){
+                        for(int j = 0; j < viewsBoxes.length; j++){
+                            viewsBoxes[j].setSelected(false);
+                        }
+                        viewsBoxes[i].setSelected(true);
+                        viewNumber = i;
+                    }
+                    else{
+                        viewsBoxes[0].setSelected(true);
+                    }
+                    break;
+                }
+            }
+            String [] viewColumnsNames = new DataBaseFactory().getViewColumnsNames(viewsNames[viewNumber]);
+            DefaultTableModel tableModel =  new DefaultTableModel( new DataBaseFactory().getView(viewsNames[viewNumber], viewColumnsNames.length), viewColumnsNames);
+            viewTable.setModel(tableModel);
+        }
         else{
             int index = tabbedPane.getSelectedIndex();
             String table;
@@ -274,8 +335,6 @@ public class MainWindow extends JFrame implements ActionListener{
             String linker;
             if(andBox.isSelected()) linker = " AND ";
             else linker = " OR ";
-
-
 
             if(index == 0){
                 boolean [] chosenParams = new boolean[9];
@@ -314,7 +373,6 @@ public class MainWindow extends JFrame implements ActionListener{
                     dataBaseFactory.removeData(table, chosenParams, params, linker);
                 }
 
-
             } else if(index == 1){
                 boolean [] chosenParams = new boolean[3];
                 String [] params = new String [3];
@@ -338,7 +396,7 @@ public class MainWindow extends JFrame implements ActionListener{
                 }
 
 
-            } else if(index == 2){
+            } else {
                 boolean [] chosenParams = new boolean[8];
                 String [] params = new String [8];
 
@@ -361,7 +419,6 @@ public class MainWindow extends JFrame implements ActionListener{
                 params[5] = equipmentLocationIDTxt.getText();
                 params[6] = equipmentPersonIDTxt.getText();
                 params[7] = equipmentModelTxt.getText();
-
 
                 if(source == addButton){
                     dataBaseFactory.addData(table, params);
