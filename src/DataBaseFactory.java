@@ -720,7 +720,7 @@ public class DataBaseFactory {
                     }
 
                 if(tmp[i] == "id_osoby")
-                    if(!checkIdLockation(dataToAdd[i]))
+                    if(!checkIdOsoby(dataToAdd[i]))
                     {
                         JOptionPane.showMessageDialog(frame,"Podane Id_osoby nie istnieje lub zostawiłeś/łaś puste pole");
                         flag = false;
