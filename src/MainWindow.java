@@ -251,9 +251,19 @@ public class MainWindow extends JFrame implements ActionListener{
             viewsBoxes[i].addActionListener(this);
             viewScrollPanel.add(viewsBoxes[i]);
         }
-        viewsBoxes[0].setSelected(true);
-        viewColumnsNames = dataBaseFactory.getViewColumnsNames(viewsNames[0]);
-        viewTable = new JTable(dataBaseFactory.getView(viewsNames[0], viewColumnsNames.length), viewColumnsNames);
+        if(viewsNames.length != 0){
+            viewsBoxes[0].setSelected(true);
+            viewColumnsNames = dataBaseFactory.getViewColumnsNames(viewsNames[0]);
+            viewTable = new JTable(dataBaseFactory.getView(viewsNames[0], viewColumnsNames.length), viewColumnsNames);
+        }
+        else{
+            String [][] tmp = {{"","","","",""},{"","","","",""}};
+            String [] colTmp = {"","","","",""};
+            viewTable = new JTable(tmp, colTmp);
+            JLabel noViewsLabel =  new JLabel("No views created");
+            noViewsLabel.setForeground(Color.RED);
+            viewScrollPanel.add(noViewsLabel);
+        }
         viewScroll = new JScrollPane(viewTable);
         viewCardContainer.add(Box.createRigidArea(spacing));
         viewCardContainer.add(viewsListScroll);
