@@ -16,7 +16,7 @@ public class LogInWindow extends JFrame implements ActionListener{
     JPasswordField passwordField;
     JTextField loginField;
     JCheckBox echoCheckBox;
-    JLabel feedback;
+    JLabel feedback, loginLabel, passwordLabel;
 
     public LogInWindow(){
         setSize(windowWidth, windowHeight);
@@ -29,17 +29,26 @@ public class LogInWindow extends JFrame implements ActionListener{
         logInButton.addActionListener(this);
         add(logInButton);
 
+        passwordLabel = new JLabel("Password:");
+        passwordLabel.setBounds(50,100,65,20);
+        add(passwordLabel);
+
         passwordField = new JPasswordField();
         passwordField.setBounds(120,100,110,20);
         passwordField.setEchoChar('*');
         add(passwordField);
+
+        loginLabel = new JLabel("Login:");
+        loginLabel.setBounds(75,70,40,20);
+        add(loginLabel);
 
         loginField = new JTextField();
         loginField.setBounds(120,70,110,20);
         add(loginField);
 
         echoCheckBox = new JCheckBox();
-        echoCheckBox.setBounds(240, 100,20,20);
+        echoCheckBox.setBounds(240, 100,80,20);
+        echoCheckBox.setText("Show");
         echoCheckBox.addActionListener(this);
         add(echoCheckBox);
 
@@ -55,9 +64,11 @@ public class LogInWindow extends JFrame implements ActionListener{
             String tmp = new String(passwordField.getPassword());
             if(echoCheckBox.isSelected()){
                 passwordField.setEchoChar((char)0);
+                echoCheckBox.setText("Hide");
             }
             else {
                 passwordField.setEchoChar('*');
+                echoCheckBox.setText("Show");
             }
             passwordField.setText(tmp);
         }
