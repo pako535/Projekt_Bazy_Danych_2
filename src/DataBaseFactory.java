@@ -793,10 +793,171 @@ public class DataBaseFactory {
         return success;
     }
 
-    public boolean changeData(){
-        boolean success = false;
+    public boolean updateData(String table, boolean[] chosenParams, String[] dataToUpdate){
+        JFrame frame = new JFrame();
+        String query = "";
+        if(table.equals("osoby")){
+            query = "UPDATE osoby SET ";
+            String []tmp = {"id_osoby", "id_lokalizacji", "imie", "nazwisko", "nr_tel", "adres", "mail", "login", "hasło"};
 
-        return success;
+            for(int i = 0; i < dataToUpdate.length; i++) {
+                if(tmp[i].equals("id_osoby")) {
+                    try {
+                        statement = conn.createStatement();
+                        resultSet = statement.executeQuery("SELECT count(1) FROM osoby WHERE id_osoby = " + dataToUpdate[0].toString() + ";");
+                        resultSet.next();
+                        int x = resultSet.getInt(1);
+                        if(x == 0){
+                            JOptionPane.showMessageDialog(frame,"Rekord o podanym id_osoby nie istnieje!");
+                            return false;
+                        }
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else if(tmp[i].equals("id_lokalizacji") && chosenParams[i]){
+                    if(!checkLockationId(dataToUpdate[i])) {
+                        JOptionPane.showMessageDialog(frame,"Podane ID Lokalizacji nie jest liczbą lub jest puste");
+                        return false;
+                    }
+                }
+                else if(tmp[i].equals("imie") && chosenParams[i]){
+                    if(dataToUpdate[i].isEmpty()) {
+                        JOptionPane.showMessageDialog(frame,"Imię lub Nazwisko jest puste");
+                        return false;
+                    }
+                }
+                else if(tmp[i].equals("nazwisko") && chosenParams[i]){
+                    if(dataToUpdate[i].isEmpty()) {
+                        JOptionPane.showMessageDialog(frame,"Imię lub Nazwisko jest puste");
+                        return false;
+                    }
+                }
+                else if(tmp[i].equals("nr_tel") && chosenParams[i]){
+                    if(!checkPhoneNumber(dataToUpdate[i])) {
+                        JOptionPane.showMessageDialog(frame, "Podany numer telefonu jest błedny \nPowienien zawierać 9 cyfr");
+                        return false;
+                    }
+                }
+                else if(tmp[i].equals("mail") && chosenParams[i]){
+                    if(!checkEmail(dataToUpdate[i])){
+                        JOptionPane.showMessageDialog(frame, "Podany email jest nie prawidłowy lub został nie podany");
+                        return false;
+                    }
+                }
+                else if(tmp[i].equals("login") && chosenParams[i]){
+                    if(!checkLogin(dataToUpdate[i])){
+                        JOptionPane.showMessageDialog(frame,"Podany login już istnieje lub zawiera znaki nie dozowolone (' , . / \") lub pole jest puste");
+                        return false;
+                    }
+                }
+                else if(tmp[i].equals("hasło") && chosenParams[i]){
+                    if(!checkPass(dataToUpdate[i])) {
+                        JOptionPane.showMessageDialog(frame,"Hasło powinno być dłuższe niż 5 znaków");
+                        return false;
+                    }
+                }
+                if(chosenParams[i] && i > 0){
+                    query += tmp[i] + " = " + "'" + dataToUpdate[i] + "', ";
+                }
+            }
+            query = query.substring(0, query.length() - 2);     // wyrzuca przecinek i spacje z końca
+            query += " WHERE id_osoby = " + dataToUpdate[0].toString() + ";";
+        }
+        else if(table.equals("sprzet")) {
+            query = "UPDATE sprzet SET ";
+            String []tmp = {"id_sprzet", "typ", "marka", "parametry", "stan_sprzetu", "id_lokalizacji", "id_osoby", "model"};
+
+            for(int i = 0; i < dataToUpdate.length; i++){
+                if(tmp[i].equals("id_sprzet")){
+                    try {
+                        statement = conn.createStatement();
+                        resultSet = statement.executeQuery("SELECT count(1) FROM sprzet WHERE id_sprzet = " + dataToUpdate[0].toString() + ";");
+
+                        resultSet.next();
+                        int x = resultSet.getInt(1);
+                        if(x == 0){
+                            JOptionPane.showMessageDialog(frame,"Rekord o podanym id_osoby nie istnieje!");
+                            return false;
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else if(tmp[i].equals("stan_sprzetu") && chosenParams[i]){
+                    if(!dataToUpdate[i].toUpperCase().equals("NIESPRAWNY") && !dataToUpdate[i].toUpperCase().equals("SPRAWNY")){
+                        JOptionPane.showMessageDialog(frame,"Sprzet może mieć tylko dwa stany SPRAWNY i NIESPRAWNY!");
+                        return false;
+                    }
+                }
+                else if(tmp[i].equals("id_lokalizacji") && chosenParams[i]){
+                    if(!checkIdLockation(dataToUpdate[i])){
+                        JOptionPane.showMessageDialog(frame,"Podane Id_lokalizacji nie istnieje lub zostawiłeś/łaś puste pole");
+                        return false;
+                    }
+                }
+                else if(tmp[i].equals("id_osoby")){
+                    if(!checkIdOsoby(dataToUpdate[i])){
+                        JOptionPane.showMessageDialog(frame,"Podane Id_osoby nie istnieje lub zostawiłeś/łaś puste pole");
+                        return false;
+                    }
+                }
+                if(chosenParams[i] && i > 0){
+                    query += tmp[i] + " = " + "'" + dataToUpdate[i] + "', ";
+                }
+            }
+            query = query.substring(0, query.length() - 2);     // wyrzuca przecinek i spacje z końca
+            query += " WHERE id_sprzet = " + dataToUpdate[0].toString() + ";";
+        }
+        else if(table.equals("lokalizacja")){
+            query = "UPDATE lokalizacja SET ";
+            String []tmp = {"id_lokalizacja", "miasto", "kod_pocztowy"};
+
+            for(int i = 0; i < dataToUpdate.length; i++){
+                if(tmp[i] == "id_lokalizacja") {
+                    try {
+                        statement = conn.createStatement();
+                        resultSet = statement.executeQuery("SELECT count(1) FROM lokalizacja WHERE id_lokalizacja = " + dataToUpdate[0].toString() + ";");
+
+                        resultSet.next();
+                        int x = resultSet.getInt(1);
+                        if(x == 0){
+                            JOptionPane.showMessageDialog(frame,"Rekord o podanym id_lokalizacji nie istnieje!");
+                            return false;
+                        }
+                    }
+                    catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else if(tmp[i].equals("miasto") && chosenParams[i]){
+                    if(!checkCity(dataToUpdate[i])){
+                        JOptionPane.showMessageDialog(frame,"Podane miasto zawiera cyfry lub pole jest puste");
+                        return false;
+                    }
+                }
+                else if(tmp[i] == "kod_pocztowy"){
+                    if(!checkPostCode(dataToUpdate[i])){
+                        JOptionPane.showMessageDialog(frame,"Podany kod pocztowy jest błędny\nPowinien wyglądać na przykład tak: '65-012'");
+                        return false;
+                    }
+                }
+                if(chosenParams[i] && i > 0){
+                    query += tmp[i] + " = " + "'" + dataToUpdate[i] + "', ";
+                }
+            }
+            query = query.substring(0, query.length() - 2);     // wyrzuca przecinek i spacje z końca
+            query += " WHERE id_lokalizacja = " + dataToUpdate[0].toString() + ";";
+        }
+        try{
+            statement = conn.createStatement();
+            statement.executeUpdate(query);
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return true;
     }
 
     public String[] getViewsNames(){
@@ -989,10 +1150,6 @@ public class DataBaseFactory {
         if(veriable.isEmpty())
             return false;
 
-        return true;
-    }
-
-    public boolean updateData(String table, boolean[] chosenParams, String[] dataToUpdate){
         return true;
     }
 }
