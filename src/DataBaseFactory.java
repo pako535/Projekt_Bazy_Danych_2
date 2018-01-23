@@ -897,7 +897,7 @@ public class DataBaseFactory {
                         return false;
                     }
                 }
-                else if(tmp[i].equals("id_osoby")){
+                else if(tmp[i].equals("id_osoby") && chosenParams[i]){
                     if(!checkIdOsoby(dataToUpdate[i])){
                         JOptionPane.showMessageDialog(frame,"Podane Id_osoby nie istnieje lub zostawiłeś/łaś puste pole");
                         return false;
@@ -937,7 +937,7 @@ public class DataBaseFactory {
                         return false;
                     }
                 }
-                else if(tmp[i] == "kod_pocztowy"){
+                else if(tmp[i] == "kod_pocztowy" && chosenParams[i]){
                     if(!checkPostCode(dataToUpdate[i])){
                         JOptionPane.showMessageDialog(frame,"Podany kod pocztowy jest błędny\nPowinien wyglądać na przykład tak: '65-012'");
                         return false;
