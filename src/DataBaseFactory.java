@@ -32,7 +32,6 @@ public class DataBaseFactory {
         try {
             statement = conn.createStatement();
             resultSet = statement.executeQuery(query);
-            //System.out.println(resultSet);
             if(resultSet.next()) {
                 String result = resultSet.getString("hasło");
                 if (password.equals(result))
@@ -41,8 +40,6 @@ public class DataBaseFactory {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        if(login.equals(password)) return true;
         return false;
     }
 
@@ -777,9 +774,6 @@ public class DataBaseFactory {
                         JOptionPane.showMessageDialog(frame,"Podany kod pocztowy jest błędny\nPowinien wyglądać na przykład tak: '65-012'");
                     }
 
-
-
-
                 query += "'" + dataToAdd[i] + "', ";
             }
             query = query.substring(0,query.length() - 2);
@@ -787,17 +781,21 @@ public class DataBaseFactory {
 
             if(flag != false) {
                 try {
-
                     statement = conn.createStatement();
                     statement.executeUpdate(query);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
             }
-
         }
 
         boolean success = false;
+        return success;
+    }
+
+    public boolean changeData(){
+        boolean success = false;
+
         return success;
     }
 
@@ -991,6 +989,10 @@ public class DataBaseFactory {
         if(veriable.isEmpty())
             return false;
 
+        return true;
+    }
+
+    public boolean updateData(String table, boolean[] chosenParams, String[] dataToUpdate){
         return true;
     }
 }

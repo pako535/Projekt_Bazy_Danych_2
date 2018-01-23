@@ -11,7 +11,7 @@ public class MainWindow extends JFrame implements ActionListener{
     JTabbedPane tabbedPane;
     JScrollPane peopleScroll, locationsScroll, equipmentScroll, viewsListScroll, viewScroll;
     JPanel peopleCard, locationsCard, equipmentCard, viewsCard, viewCardContainer, viewScrollPanel, actionPanel;
-    JButton addButton, findButton, removeButton;
+    JButton addButton, findButton, removeButton, updateButton;
     JTable peopleTable, locationsTable, equipmentTable, viewTable;
     JLabel alternativeLabel, conjuctionLabel;
     JTextField peoplePersonIDTxt, peopleLocationIDTxt, peopleNameTxt, peopleSurnameTxt, peoplePhoneNumberTxt,
@@ -275,6 +275,10 @@ public class MainWindow extends JFrame implements ActionListener{
     private void createActionPanel(){
         actionPanel = new JPanel();
         actionPanel.setLayout(null);
+        updateButton = new JButton("Update");
+        updateButton.setBounds(50, 25,100,20);
+        updateButton.addActionListener(this);
+        actionPanel.add(updateButton);
         addButton = new JButton("Add");
         addButton.setBounds(200, 25,100,20);
         addButton.addActionListener(this);
@@ -376,12 +380,14 @@ public class MainWindow extends JFrame implements ActionListener{
                     dataBaseFactory.addData(table, params);
                 }
                 else if(source == findButton){
-
                     DefaultTableModel tableModel =  new DefaultTableModel(dataBaseFactory.getData(table, chosenParams, params, linker), peopleTableColumnNames);
                     peopleTable.setModel(tableModel);
                 }
                 else if(source == removeButton){
                     dataBaseFactory.removeData(table, chosenParams, params, linker);
+                }
+                else if(source == updateButton){
+                    dataBaseFactory.updateData(table, chosenParams, params);
                 }
 
             } else if(index == 1){
@@ -399,14 +405,17 @@ public class MainWindow extends JFrame implements ActionListener{
                 params[2] = locationsPostCodeTxt.getText();
                 if(source == addButton){
                     dataBaseFactory.addData(table, params);
-                } else if(source == findButton){
+                }
+                else if(source == findButton){
                     DefaultTableModel tableModel =  new DefaultTableModel(dataBaseFactory.getData(table, chosenParams, params, linker), locationsTableColumnNames);
                     locationsTable.setModel(tableModel);
-                } else{
+                }
+                else if(source == removeButton){
                     dataBaseFactory.removeData(table, chosenParams, params, linker);
                 }
-
-
+                else if(source == updateButton) {
+                    dataBaseFactory.updateData(table, chosenParams, params);
+                }
             } else {
                 boolean [] chosenParams = new boolean[8];
                 String [] params = new String [8];
@@ -433,11 +442,16 @@ public class MainWindow extends JFrame implements ActionListener{
 
                 if(source == addButton){
                     dataBaseFactory.addData(table, params);
-                } else if(source == findButton){
+                }
+                else if(source == findButton){
                     DefaultTableModel tableModel =  new DefaultTableModel(dataBaseFactory.getData(table, chosenParams, params, linker), equipmentTableColumnNames);
                     equipmentTable.setModel(tableModel);
-                } else{
+                }
+                else if(source == removeButton){
                     dataBaseFactory.removeData(table, chosenParams, params, linker);
+                }
+                else if(source == updateButton) {
+                    dataBaseFactory.updateData(table, chosenParams, params);
                 }
             }
         }
